@@ -21,7 +21,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Cài ffmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg zip
 
       - name: Render toàn bộ video
         run: node render.mjs danhsach.csv
@@ -29,6 +29,6 @@ jobs:
       - name: Đóng gói video
         uses: actions/upload-artifact@v4
         with:
-          name: thiep-video-mp4
-          path: output/*.mp4
+          name: thiep-video-theo-lop
+          path: output/*.zip
           retention-days: 14
