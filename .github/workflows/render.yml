@@ -21,14 +21,113 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Cài ffmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg zip
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Render toàn bộ video
         run: node render.mjs danhsach.csv
 
-      - name: Đóng gói video
+      - name: Tải lớp 12/1
         uses: actions/upload-artifact@v4
         with:
-          name: thiep-video-theo-lop
-          path: output/*.zip
+          name: 12-1
+          path: output/by-class/12-1/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/2
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-2
+          path: output/by-class/12-2/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/3
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-3
+          path: output/by-class/12-3/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/4
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-4
+          path: output/by-class/12-4/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/5
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-5
+          path: output/by-class/12-5/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/6
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-6
+          path: output/by-class/12-6/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/7
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-7
+          path: output/by-class/12-7/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/8
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-8
+          path: output/by-class/12-8/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/9
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-9
+          path: output/by-class/12-9/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12/10
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-10
+          path: output/by-class/12-10/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12 Anh
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-anh
+          path: output/by-class/12-anh/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12 Hóa
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-hoa
+          path: output/by-class/12-hoa/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12 Toán
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-toan
+          path: output/by-class/12-toan/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12 Lý Sinh
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-ly-sinh
+          path: output/by-class/12-ly-sinh/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Tải lớp 12 Văn Pháp
+        uses: actions/upload-artifact@v4
+        with:
+          name: 12-van-phap
+          path: output/by-class/12-van-phap/*.mp4
+          if-no-files-found: ignore
           retention-days: 14
