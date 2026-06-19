@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face{
+    font-family:'Dancing Script';font-weight:700;font-style:normal;font-display:block;
+    src:url('assets/fonts/ds-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  }
+  @font-face{
+    font-family:'Dancing Script';font-weight:700;font-style:normal;font-display:block;
+    src:url('assets/fonts/ds-viet.woff2') format('woff2');
+    unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+1EA0-1EF9,U+20AB;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;position:relative}
+  #bg{position:absolute;inset:0;width:1920px;height:1080px;object-fit:fill}
+  .cover{position:absolute;background:#fff8ed}
+  #cvName{left:1030px;top:742px;width:600px;height:82px}
+  #cvCls {left:1030px;top:834px;width:600px;height:82px}
+  /* mỗi dòng: container reveal (overflow hidden) để chữ lộ dần trái->phải */
+  .ln{
+    position:absolute;left:1058px;height:74px;overflow:hidden;
+    display:flex;align-items:flex-end;white-space:nowrap;
+  }
+  #name{top:748px}
+  #cls {top:840px}
+  .txt{
+    font-family:'Dancing Script',cursive;font-weight:700;color:#446808;
+    line-height:1;white-space:nowrap;display:inline-block;
+  }
+  /* con trỏ viết */
+  #cursor{
+    position:absolute;width:3px;background:#446808;opacity:0;
+  }
+</style>
+</head>
+<body>
+  <img id="bg" src="assets/1-phongbi.jpg" alt="">
+  <div class="cover" id="cvName"></div>
+  <div class="cover" id="cvCls"></div>
+  <div class="ln" id="name"><span class="txt" id="nameTxt">Huỳnh Anh Thuận</span></div>
+  <div class="ln" id="cls"><span class="txt" id="clsTxt">Lớp 12/2</span></div>
+  <div id="cursor"></div>
+<script>
+  (function(){
+    var p = new URLSearchParams(location.search);
+    var ten = (p.get('ten')||'').trim();
+    var lop = (p.get('lop')||'').trim();
+    var nameTxt=document.getElementById('nameTxt'), clsTxt=document.getElementById('clsTxt');
+    var nameBox=document.getElementById('name'), clsBox=document.getElementById('cls');
+    var cursor=document.getElementById('cursor');
+    if(ten) nameTxt.textContent = ten;
+    if(lop) clsTxt.textContent = 'Lớp ' + lop;
+
+    var nameW=0, clsW=0;
+    function setup(){
+      // auto-fit cỡ chữ cho vừa bề ngang (tối đa 540px), khớp 'Mến Gửi Bạn'
+      [ [nameTxt], [clsTxt] ].forEach(function(a){
+        var el=a[0], size=68; el.style.fontSize=size+'px';
+        while(el.scrollWidth>540 && size>26){ size-=2; el.style.fontSize=size+'px'; }
+      });
+      nameW=nameTxt.scrollWidth; clsW=clsTxt.scrollWidth;
+      nameBox.style.width='0px'; clsBox.style.width='0px';
+      window.__ready=true;
+    }
+    // p: 0..1 — tiến trình viết. Tên viết trong [0,0.55], lớp trong [0.58,1]
+    window.setProgress=function(prog){
+      var tn = Math.max(0, Math.min(1, prog/0.55));
+      var tc = Math.max(0, Math.min(1, (prog-0.58)/0.42));
+      var wN = nameW*tn, wC = clsW*tc;
+      nameBox.style.width = wN + 'px';
+      clsBox.style.width  = wC + 'px';
+      // con trỏ ở mép phải dòng đang viết
+      if(prog < 0.56){
+        cursor.style.opacity = (tn>0 && tn<1) ? 1 : 0;
+        cursor.style.left = (1048 + wN) + 'px';
+        cursor.style.top = '752px'; cursor.style.height='58px';
+      } else if(tc < 1){
+        cursor.style.opacity = 1;
+        cursor.style.left = (1048 + wC) + 'px';
+        cursor.style.top = '844px'; cursor.style.height='58px';
+      } else { cursor.style.opacity = 0; }
+    };
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(setup); }
+    else { window.onload=setup; }
+  })();
+</script>
+</body>
+</html>

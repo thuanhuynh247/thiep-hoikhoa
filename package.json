@@ -1,0 +1,14 @@
+{
+  "name": "hoikhoa-video",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@fontsource/dancing-script": "^5.2.8",
+    "playwright": "^1.56.0",
+    "playwright-core": "^1.56.0"
+  }
+}
