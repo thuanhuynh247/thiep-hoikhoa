@@ -139,20 +139,6 @@ async function main() {
     }
   }
 
-  // nén mỗi lớp thành một file zip riêng trong output/
-  console.log('\nĐang nén video theo lớp...');
-  for (const dir of fs.readdirSync(byClass)) {
-    const full = path.join(byClass, dir);
-    if (!fs.statSync(full).isDirectory()) continue;
-    const zipPath = path.join(OUT, `${dir}.zip`);
-    try {
-      execFileSync('zip', ['-rj', zipPath, full], { stdio: 'ignore' });
-      const n = fs.readdirSync(full).length;
-      console.log(`  ✓ ${dir}.zip (${n} video)`);
-    } catch (e) {
-      console.error(`  ✗ Lỗi nén ${dir}: ${e.message}`);
-    }
-  }
   await browser.close();
   console.log(`\nXong: ${ok}/${rows.length} video trong thư mục output/`);
 }
