@@ -35,6 +35,12 @@ function slug(s) {
     .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
 }
 
+function slugLop(lop) {
+  return (lop || 'khac').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+}
+
 function readList(file) {
   const txt = fs.readFileSync(file, 'utf8');
   const lines = txt.split(/\r?\n/).filter(l => l.trim());
@@ -112,18 +118,39 @@ async function main() {
 
   let ok = 0;
   const bgPaths = SEQUENCE.filter(it => it.bg).map(it => path.join(__dirname, it.bg));
+  const byClass = path.join(OUT, 'by-class');
+  fs.mkdirSync(byClass, { recursive: true });
+
   for (const { ten, lop } of rows) {
     const sName = slug(ten);
+    const sLop  = slugLop(lop);
     const framesDir = path.join(FRAMES, sName);
+    const classDir  = path.join(byClass, sLop);
+    fs.mkdirSync(classDir, { recursive: true });
     try {
       const { empty, full } = await captureEnvelope(page, tplUrl, ten, lop, framesDir);
-      const outFile = path.join(OUT, `thu-moi-${sName}.mp4`);
+      const outFile = path.join(classDir, `thu-moi-${sName}.mp4`);
       execFileSync('ffmpeg', buildFfmpegArgs(empty, full, bgPaths, outFile, music), { stdio: 'ignore' });
       fs.rmSync(framesDir, { recursive: true, force: true });
       ok++;
-      console.log(`✓ ${ten} (${lop}) → output/${path.basename(outFile)}`);
+      console.log(`✓ ${ten} (${lop})`);
     } catch (e) {
       console.error(`✗ LỖI ${ten}: ${e.message}`);
+    }
+  }
+
+  // nén mỗi lớp thành một file zip riêng trong output/
+  console.log('\nĐang nén video theo lớp...');
+  for (const dir of fs.readdirSync(byClass)) {
+    const full = path.join(byClass, dir);
+    if (!fs.statSync(full).isDirectory()) continue;
+    const zipPath = path.join(OUT, `${dir}.zip`);
+    try {
+      execFileSync('zip', ['-rj', zipPath, full], { stdio: 'ignore' });
+      const n = fs.readdirSync(full).length;
+      console.log(`  ✓ ${dir}.zip (${n} video)`);
+    } catch (e) {
+      console.error(`  ✗ Lỗi nén ${dir}: ${e.message}`);
     }
   }
   await browser.close();
