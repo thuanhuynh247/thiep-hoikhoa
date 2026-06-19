@@ -22,10 +22,10 @@ const HOLD        = DUR - ANIM_DUR;
 
 const SEQUENCE = [
   { envelope: true },
-  { bg: 'assets/2-thumoi.jpg' },
-  { bg: 'assets/3-chuongtrinh.jpg' },
-  { bg: 'assets/4-dresscode.jpg' },
-  { bg: 'assets/5-nhovenha.jpg' },
+  { bg: '2-thumoi.jpg' },
+  { bg: '3-chuongtrinh.jpg' },
+  { bg: '4-dresscode.jpg' },
+  { bg: '5-nhovenha.jpg' },
 ];
 // ====================
 
@@ -102,7 +102,7 @@ async function main() {
   if (!rows.length) { console.error('Danh sách rỗng.'); process.exit(1); }
   console.log(`Có ${rows.length} người. Bắt đầu render...`);
 
-  const musicPath = path.join(__dirname, 'assets', 'music.mp3');
+  const musicPath = path.join(__dirname, 'music.mp3');
   const music = fs.existsSync(musicPath) ? musicPath : null;
   if (music) console.log('Có nhạc nền: assets/music.mp3');
 
