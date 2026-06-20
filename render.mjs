@@ -129,7 +129,7 @@ async function main() {
     fs.mkdirSync(classDir, { recursive: true });
     try {
       const { empty, full } = await captureEnvelope(page, tplUrl, ten, lop, framesDir);
-      const outFile = path.join(classDir, `thu-moi-${sName}.mp4`);
+      const outFile = path.join(classDir, `thu-moi-${sName}-${sLop}.mp4`);
       execFileSync('ffmpeg', buildFfmpegArgs(empty, full, bgPaths, outFile, music), { stdio: 'ignore' });
       fs.rmSync(framesDir, { recursive: true, force: true });
       ok++;
